@@ -29,7 +29,9 @@
 	$(function() {
 
 		var	$window = $(window),
-			$body = $('body');
+			$body = $('body'),
+			$headercito = $('#headercito'),
+			$banner = $('#banner');
 
 		if (skel.vars.mobile) {
 
@@ -156,6 +158,24 @@
 				windowMargin: 10,
 				usePopupNav: true
 			});
+
+			if (!skel.vars.mobile
+			&&	$$headercito.hasClass('alt')
+			&&	$banner.length > 0) {
+
+				$window.on('load', function() {
+
+					$banner.scrollwatch({
+						delay:		0,
+						range:		1,
+						anchor:		'top',
+						on:			function() { $headercito.addClass('alt reveal'); },
+						off:		function() { $headercito.removeClass('alt'); }
+					});
+
+				});
+
+			}
 
 	});
 

@@ -5,6 +5,7 @@ if(!isset($_POST['submit']))
 	echo "error; you need to submit the form!";
 }
 $name = $_POST['name'];
+$subject = $_POST['subject'];
 $visitor_email = $_POST['email'];
 $message = $_POST['message'];
 
@@ -21,19 +22,16 @@ if(IsInjected($visitor_email))
     exit;
 }
 
-$email_from = 'aastorga10@gmail.com';//<== update the email address
-$email_subject = "New Form submission";
-$email_body = "You have received a new message from the user $name.\n".
-    "Here is the message:\n $message".
+$email_from = "$visitor_email";//<== update the email address 
+$email_subject = "$subject";
+$email_body = "nanaastorga.me You have received a new message from $name.\n".
+    "Here is the message:\n $message";
 
 $to = "aastorga10@gmail.com";//<== update the email address
 $headers = "From: $email_from \r\n";
 $headers .= "Reply-To: $visitor_email \r\n";
 //Send the email!
-mail($to,$email_subject,$email_body,$headers);
-//done. redirect to thank-you page.
-header('Location: index.html');//<== update the home page
-
+$mail_status = @mail($to,$email_subject,$email_body,$headers);
 
 // Function to validate against any email injection attempts
 function IsInjected($str)
@@ -57,5 +55,23 @@ function IsInjected($str)
     return false;
   }
 }
+
+if ($mail_status) { ?>
+	<script language="javascript" type="text/javascript">
+		alert('Thank you for the message. We will contact you shortly.');
+		window.location = '../index.html';
+	</script>
+<?php
+}
+else { ?>
+	<script language="javascript" type="text/javascript">
+		alert('We´re having so issues, please try it later');
+		window.location = 'contact.html';
+	</script>
+<?php
+}
+
+//done. redirect to thank-you page.
+//header('Location: index.html');//<== update the home page
 
 ?>
